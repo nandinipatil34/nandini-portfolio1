@@ -1,76 +1,64 @@
 /**
- * Nandini Patil - Frontend Developer Portfolio
- * Clean, lightweight, modular JavaScript for smooth navigation,
- * project modals, copy-to-clipboard, and interactive contact feedback.
+ * Nandini Patil - Portfolio JavaScript
+ * Beginner-friendly, clean, and lightweight script for:
+ * 1. Mobile menu toggle
+ * 2. Active navigation link on scroll
+ * 3. Project summary modal
+ * 4. Contact form submission message
+ * 5. Current year in footer
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollSpy();
-  initCopyEmail();
-  initProjectModals();
+  initProjectModal();
   initContactForm();
   setCurrentYear();
 });
 
-/* ===================================================================
-   1. MOBILE MENU TOGGLE
-   =================================================================== */
+/* --------------------------------------------------
+   1. Mobile Navigation Menu Toggle
+-------------------------------------------------- */
 function initMobileMenu() {
-  const menuToggle = document.getElementById('menu-toggle');
-  const navLinks = document.getElementById('nav-menu')?.querySelector('.nav-links');
+  const menuBtn = document.getElementById('menu-btn');
+  const navMenu = document.getElementById('nav-menu');
 
-  if (!menuToggle || !navLinks) return;
+  if (!menuBtn || !navMenu) return;
 
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = navMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen);
   });
 
-  // Close when clicking any link
-  navLinks.querySelectorAll('.nav-link').forEach(link => {
+  // Close the menu when a nav link is clicked
+  const navLinks = navMenu.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
+      navMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
     });
-  });
-
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
-      navLinks.classList.remove('open');
-    }
   });
 }
 
-/* ===================================================================
-   2. SCROLL SPY & ACTIVE LINK HIGHLIGHTING
-   =================================================================== */
+/* --------------------------------------------------
+   2. Active Navigation Link on Scroll
+-------------------------------------------------- */
 function initScrollSpy() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
-  const header = document.getElementById('header');
 
   window.addEventListener('scroll', () => {
-    const scrollY = window.pageYOffset;
+    const scrollPosition = window.pageYOffset + 120;
 
-    // Header elevation
-    if (header) {
-      if (scrollY > 40) {
-        header.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.4)';
-      } else {
-        header.style.boxShadow = 'none';
-      }
-    }
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
 
-    // Active link highlighting
-    sections.forEach(current => {
-      const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 120;
-      const sectionId = current.getAttribute('id');
-
-      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+      if (scrollPosition >= top && scrollPosition < top + height) {
         navLinks.forEach(link => {
           link.classList.remove('active');
-          if (link.getAttribute('href') === `#${sectionId}`) {
+          if (link.getAttribute('href') === `#${id}`) {
             link.classList.add('active');
           }
         });
@@ -79,149 +67,96 @@ function initScrollSpy() {
   });
 }
 
-/* ===================================================================
-   3. COPY EMAIL TO CLIPBOARD
-   =================================================================== */
-function initCopyEmail() {
-  const copyBtn = document.getElementById('copy-email-btn');
-  const emailText = document.getElementById('email-text');
+/* --------------------------------------------------
+   3. Project Summary Modal
+-------------------------------------------------- */
+function initProjectModal() {
+  const modal = document.getElementById('project-modal');
+  const openBtn = document.getElementById('view-details-btn');
+  const closeBtn = document.getElementById('modal-close');
+  const okBtn = document.getElementById('modal-ok-btn');
 
-  if (!copyBtn || !emailText) return;
+  if (!modal || !openBtn) return;
 
-  copyBtn.addEventListener('click', async () => {
-    const email = emailText.textContent.trim();
-    try {
-      await navigator.clipboard.writeText(email);
-      showToast('Email address copied to clipboard!', 'success');
-      copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-      setTimeout(() => {
-        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
-      }, 2500);
-    } catch (err) {
-      showToast(`Email: ${email}`, 'info');
-    }
-  });
-}
-
-/* ===================================================================
-   4. PROJECT DETAILS MODAL
-   =================================================================== */
-function initProjectModals() {
-  const modalBackdrop = document.getElementById('modal-backdrop');
-  const modalHeading = document.getElementById('modal-heading');
-  const modalDescription = document.getElementById('modal-description');
-  const modalClose = document.getElementById('modal-close');
-  const modalCloseAction = document.getElementById('modal-close-action');
-  const triggers = document.querySelectorAll('.preview-trigger');
-
-  if (!modalBackdrop || !modalHeading || !modalDescription) return;
-
-  triggers.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const title = btn.getAttribute('data-title');
-      const desc = btn.getAttribute('data-desc');
-
-      modalHeading.textContent = title;
-      modalDescription.textContent = desc;
-
-      modalBackdrop.classList.add('active');
-      modalBackdrop.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  const closeModal = () => {
-    modalBackdrop.classList.remove('active');
-    modalBackdrop.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = 'auto';
+  const openModal = () => {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   };
 
-  if (modalClose) modalClose.addEventListener('click', closeModal);
-  if (modalCloseAction) modalCloseAction.addEventListener('click', closeModal);
+  const closeModal = () => {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
 
-  modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) closeModal();
+  openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (okBtn) okBtn.addEventListener('click', closeModal);
+
+  // Close when clicking the dark backdrop
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
   });
 
+  // Close with the Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
       closeModal();
     }
   });
 }
 
-/* ===================================================================
-   5. CONTACT FORM HANDLING
-   =================================================================== */
+/* --------------------------------------------------
+   4. Contact Form Submission
+-------------------------------------------------- */
 function initContactForm() {
   const form = document.getElementById('contact-form');
-  const submitBtn = document.getElementById('form-submit-btn');
-  const alertBox = document.getElementById('form-alert');
+  const statusMsg = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
 
-  if (!form || !submitBtn || !alertBox) return;
+  if (!form || !statusMsg) return;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('form-name').value.trim();
-    const email = document.getElementById('form-email').value.trim();
-    const message = document.getElementById('form-message').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
 
     if (!name || !email || !message) {
-      alertBox.textContent = 'Please fill out all required fields.';
-      alertBox.className = 'form-alert error';
+      statusMsg.className = 'form-message';
+      statusMsg.style.display = 'block';
+      statusMsg.style.color = '#f87171';
+      statusMsg.textContent = 'Please fill out all fields.';
       return;
     }
 
+    // Button feedback
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>Sending...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+    submitBtn.innerHTML = 'Sending...';
 
     setTimeout(() => {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
 
-      alertBox.textContent = `Thank you, ${name}! Your message has been sent. I will get back to you shortly.`;
-      alertBox.className = 'form-alert success';
+      statusMsg.className = 'form-message success';
+      statusMsg.textContent = `Thank you, ${name}! Your message has been sent. I will get back to you soon.`;
       form.reset();
 
-      showToast(`Message sent successfully from ${name}!`, 'success');
-
       setTimeout(() => {
-        alertBox.style.display = 'none';
+        statusMsg.style.display = 'none';
       }, 5000);
-    }, 1000);
+    }, 600);
   });
 }
 
-/* ===================================================================
-   6. TOAST NOTIFICATIONS
-   =================================================================== */
-function showToast(message, type = 'info') {
-  const toastBox = document.getElementById('toast-box');
-  if (!toastBox) return;
-
-  const toast = document.createElement('div');
-  toast.className = 'toast-item';
-  const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-info';
-  
-  toast.innerHTML = `<i class="fa-solid ${icon}" style="color: #a855f7;"></i> <span>${message}</span>`;
-  toastBox.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    toast.style.transition = 'all 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
-}
-
-/* ===================================================================
-   7. FOOTER YEAR
-   =================================================================== */
+/* --------------------------------------------------
+   5. Auto-update Footer Year
+-------------------------------------------------- */
 function setCurrentYear() {
-  const yearEl = document.getElementById('current-year');
+  const yearEl = document.getElementById('year');
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }

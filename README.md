@@ -1,36 +1,35 @@
-# Nandini Patil | Frontend Developer Portfolio
+# Nandini Patil | Portfolio Website
 
-Personal portfolio website for **Nandini Patil** — 2nd Year B.Tech Student in **Computer Science & Engineering (Data Science)** and passionate **Frontend Developer**.
-
----
-
-## 🌟 Overview & Identity
-- **Developer**: Nandini Patil
-- **Education**: 2nd Year B.Tech in CSE (Data Science)
-- **Role**: Frontend Developer
-- **Theme**: Premium Dark Theme with Violet & Royal Purple Accents (`#a855f7`, `#8b5cf6`)
-- **Core Skills**: HTML5, CSS3 (Flexbox/Grid), JavaScript (ES6+), Responsive Design
+A clean, modern, and minimal portfolio website for **Nandini Patil**, a **B.Tech 2nd-year Computer Science student**.
 
 ---
 
-## 🔗 Profiles & Contact
-- **GitHub**: [github.com/nandinipatil34](https://github.com/nandinipatil34)
-- **LinkedIn**: [linkedin.com/in/nandini-patil](https://www.linkedin.com/in/nandini-patil)
-- **Email**: `nandinipatil@example.com`
+## 💜 Theme & Design
+- **Theme**: Dark Purple minimal design (`#0c0a14` deep purple with `#a855f7` accents)
+- **Design Philosophy**: Simple, clean, natural, and student-focused
+- **Responsiveness**: Fully responsive on mobile, tablet, and desktop
 
 ---
 
-## 🚀 Projects Showcased
-1. ⭐ **Disaster Management System (Flagship)**:
-   - Web application built with HTML, CSS, and JavaScript.
-   - Emergency helpline directory, incident reporting form, shelter locator, and safety guidelines.
-2. 📊 **DataViz - Analytics Explorer**:
-   - Connecting CSE Data Science fundamentals with dynamic JavaScript chart interfaces.
-3. 💻 **Personal Developer Portfolio**:
-   - Clean, modern, responsive portfolio with dark theme and zero heavy dependencies.
+## 📑 Included Sections
+1. **Home**: Hero intro highlighting B.Tech 2nd-year status, Python learning, and quick links.
+2. **About Me**: Academic background, current learning focus, and goals.
+3. **Skills**:
+   - 🐍 **Python**: With a dedicated *Currently Learning* badge and core concepts.
+   - 🗄️ **SQL**: Relational database queries, data retrieval, and table creation.
+   - 🌐 **Web Fundamentals & Tools**: HTML5, CSS3, Git, and VS Code.
+4. **Projects**:
+   - ⭐ **Disaster Management System**: Web-based application with emergency helplines, incident reporting, shelter directory, and preparedness guides.
+5. **Contact**: Direct email, GitHub, LinkedIn, and clean contact form with status feedback.
 
 ---
 
-## 🌐 Live Localhost Link
-The project runs via Python's local server at:
+## 💻 How to View Locally
+
+Run via Python in terminal:
+```bash
+python -m http.server 3000
+```
+
+Then open your browser at:
 👉 **[http://localhost:3000](http://localhost:3000)**
